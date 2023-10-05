@@ -7,7 +7,9 @@ import os
 
 
 def do_pack():
-    """  generates a .tgz archive from the contents of the web_static folder """
+    """
+    generates a .tgz archive from the contents of the web_static folder
+    """
 
     try:
         local('mkdir -p versions')
@@ -19,5 +21,5 @@ def do_pack():
         print("web_static packed: {} -> {}Bytes".format(file_name,
               os.path.getsize(file_name)))
         return file_name
-    except:
+    except Exception:
         return None
