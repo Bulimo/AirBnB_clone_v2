@@ -7,3 +7,7 @@ base_model
 .vscode/*
 __pycache__/*
 createfile
+lb_01
+web_01
+web_02
+*.log

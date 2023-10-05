@@ -4,8 +4,8 @@
 WEB_STATIC="location /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
 
 #install nginx if not yet installed
-sudo apt-get update
-sudo apt-get -y install nginx
+sudo apt-get update > /dev/null 2>&1
+sudo apt-get -y install nginx > /dev/null
 
 # Create the folders /data/web_static/ if it doesn’t already exist
 sudo mkdir -p /data/web_static/shared/
@@ -27,4 +27,4 @@ sudo chown -R ubuntu:ubuntu /data/
 # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
 sudo sed -i "0,/location/s|location|$WEB_STATIC\n\t&|" /etc/nginx/sites-available/default
 # Restart Nginx to apply the changes
-sudo service nginx restart
+sudo service nginx restart > /dev/null
