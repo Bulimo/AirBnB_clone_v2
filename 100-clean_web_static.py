@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 """Module 3-deploy_web_static"""
-from fabric.api import env, local, put, run, cd
+from fabric.api import *
 from datetime import datetime
 import os
 
 # setting the web-01 and web-02 ip addresses
 env.hosts = ['18.204.6.232', '3.86.13.144']
+env.user = 'ubuntu'
+env.key_filename = 'my_ssh_private_key'
 
 
 def do_pack():
@@ -82,16 +84,18 @@ def do_clean(number=0):
     """
     number = int(number)
 
-    if number < 1:
+    if number == 0:
         number = 1
     else:
         number += 1
 
-    os.chdir('./versions')
-    # local("ls -lt | tail -n +{} | rev | cut -f1 -d" " | rev | \
-    #         xargs -d '\n' rm".format(number))
-    local("ls -t | tail -n +{} | xargs rm -rf".format(number))
+    # delete in local machine
+    # os.chdir('./versions')
+    with lcd('./versions/'):
+        local("ls -t | tail -n +{} | xargs rm -rf".format(number))
+
+    # delete in remote server
     with cd('/data/web_static/releases/'):
-        # run("ls -lt | tail -n +{} | rev | cut -f1 -d" " | rev | \
-        #     xargs -d '\n' rm".format(number))
-        run("ls -t | tail -n +{} | xargs rm -rf".format(number))
+        output = run("ls -t | tail -n +{} | xargs rm -rf".format(number))
+        if output.failed:
+            print("Command failed with error:", output)

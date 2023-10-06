@@ -6,6 +6,8 @@ import os
 
 # setting the web-01 and web-02 ip addresses
 env.hosts = ['18.204.6.232', '3.86.13.144']
+env.user = 'ubuntu'
+env.key_filename = 'my_ssh_private_key'
 
 
 def do_pack():
