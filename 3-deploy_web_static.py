@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/python3
 """Module 3-deploy_web_static"""
 from fabric.api import env, local, put, run
 from datetime import datetime
