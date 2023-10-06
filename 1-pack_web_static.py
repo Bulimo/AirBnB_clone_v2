@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Module 1-pa """
+"""Module 1-pack_web_static"""
 from fabric.api import *
 from datetime import datetime
 import os
@@ -8,7 +8,7 @@ import os
 
 def do_pack():
     """
-    generates a .tgz archive from the contents of the web_static folder
+    generates a.tgz archive from the contents of the web_static folder
     """
 
     try:
