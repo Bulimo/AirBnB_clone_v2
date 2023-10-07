@@ -11,4 +11,5 @@ lb_01
 web_01
 web_02
 *.log
+*.tgz
 my_ssh_private_key

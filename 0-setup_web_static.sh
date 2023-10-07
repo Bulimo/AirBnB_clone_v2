@@ -16,7 +16,13 @@ if [ -L "/data/web_static/current" ];
 then
     sudo rm -f /data/web_static/current
 fi
-echo "<html><head></head><body>Hello world!</body></html>" | sudo tee /data/web_static/releases/test/index.html
+echo "<html>
+    <head>
+    </head>
+    <body>
+        Holberton School
+    </body>
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
 #Create a symbolic link /data/web_static/current linked to the /data/web_static/releases/test/ folder. 
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
