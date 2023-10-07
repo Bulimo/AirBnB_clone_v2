@@ -6,40 +6,30 @@ package { 'nginx':
 # Create the /data/ folder
 file { '/data':
     ensure  => directory,
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
     recurse => true,
 }
 
 # Create the folder /data/web_static/ if it doesn’t already exist
 file { '/data/web_static':
     ensure  => directory,
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
     recurse => true,
 }
 
 # Create the folder /data/web_static/releases/ if it doesn’t already exist
 file { '/data/web_static/releases':
     ensure  => directory,
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
     recurse => true,
 }
 
 # Create the folder /data/web_static/shared/ if it doesn’t already exist
 file { '/data/web_static/shared':
     ensure  => directory,
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
     recurse => true,
 }
 
 # Create the folder /data/web_static/releases/test/ if it doesn’t already exi
 file { '/data/web_static/releases/test':
     ensure  => directory,
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
     recurse => true,
 }
 
@@ -54,16 +44,17 @@ file { '/data/web_static/releases/test/index.html':
   </body>
 </html>
 ",
-    owner   => 'ubuntu',
-    group   => 'ubuntu',
 }
 
 # Ensure the symbolic link is created
 file { '/data/web_static/current':
     ensure => link,
     target => '/data/web_static/releases/test',
-    owner  => 'ubuntu',
-    group  => 'ubuntu',
+}
+
+# Set ownership of /data/ directory
+exec { 'chown -R ubuntu:ubuntu /data/':
+  path => '/usr/bin/:/usr/local/bin/:/bin/',
 }
 
 # Update Nginx configuration to serve the content
@@ -72,20 +63,21 @@ file_line { 'my_web_page':
     path   => '/etc/nginx/sites-available/default',
     line   => "
         location /hbnb_static {
-		alias /data/web_static/current/;
+		alias /data/web_static/current;
+                index index.html index.htm;
 	}",
     after  => 'add_header',
-    notify => Service['nginx'],
+    notify => Exec['nginx restart'],
 }
 
 # Ensure Nginx service is running and configured
-service { 'nginx':
-    ensure  => running,
-    enable  => true,
-    require => [Package['nginx'], File['/etc/nginx/sites-available/default']],
+exec { 'nginx restart':
+    path        => '/etc/init.d/',
+    refreshonly => true,  # Only trigger the exec if notified
+    subscribe   => File['/etc/nginx/sites-available/default'],  # Replace with an appropriate file or resource
 }
 
 # Notify the service to restart when the Nginx config changes
 file { '/etc/nginx/sites-available/default':
-    notify => Service['nginx'],
+    notify => Exec['nginx restart'],
 }
