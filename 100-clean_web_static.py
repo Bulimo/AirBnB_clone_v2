@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Module 3-deploy_web_static"""
-from fabric.api import env, local, put, run
+from fabric.api import env, local, put, run, cd, lcd
 from datetime import datetime
 import os
 
@@ -107,14 +107,14 @@ def do_clean(number=0):
     number += 1
 
     # delete in local machine
-    # with lcd('./versions/'):
-    #     local("ls -t | tail -n +{} | xargs rm -rf".format(number))
-    local("cd versions && ls -t | tail -n +{} | xargs rm -rf".format(number))
+    with lcd('./versions/'):
+        local("ls -t | tail -n +{} | xargs rm -rf".format(number))
+    # local("cd versions && ls -t | tail -n +{} | xargs rm -rf".format(number))
 
     # delete in remote server
-    # with cd('/data/web_static/releases/'):
-    #     output = run("ls -t | tail -n +{} | xargs rm -rf".format(number))
-    #     if output.failed:
-    #         print("Command failed with error:", output)
-    path = "/data/web_static/releases"
-    run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
+    with cd('/data/web_static/releases/'):
+        output = run("ls -t | tail -n +{} | xargs rm -rf".format(number))
+        # if output.failed:
+        #     print("Command failed with error:", output)
+    # path = "/data/web_static/releases"
+    # run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
