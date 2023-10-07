@@ -104,8 +104,7 @@ def do_clean(number=0):
 
     if number == 0:
         number = 1
-    else:
-        number += 1
+    number += 1
 
     # delete in local machine
     # with lcd('./versions/'):
