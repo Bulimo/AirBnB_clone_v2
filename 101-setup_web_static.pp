@@ -6,31 +6,26 @@ package { 'nginx':
 # Create the /data/ folder
 file { '/data':
     ensure  => directory,
-    recurse => true,
 }
 
 # Create the folder /data/web_static/ if it doesn’t already exist
 file { '/data/web_static':
-    ensure  => directory,
-    recurse => true,
+    ensure  => directory,,
 }
 
 # Create the folder /data/web_static/releases/ if it doesn’t already exist
 file { '/data/web_static/releases':
     ensure  => directory,
-    recurse => true,
 }
 
 # Create the folder /data/web_static/shared/ if it doesn’t already exist
 file { '/data/web_static/shared':
     ensure  => directory,
-    recurse => true,
 }
 
 # Create the folder /data/web_static/releases/test/ if it doesn’t already exi
 file { '/data/web_static/releases/test':
     ensure  => directory,
-    recurse => true,
 }
 
 # Create a test HTML file
