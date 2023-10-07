@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Module 3-deploy_web_static"""
-from fabric.api import *
+from fabric.api import env, local, put, run
 from datetime import datetime
 import os
 
@@ -9,11 +9,23 @@ env.hosts = ['18.204.6.232', '3.86.13.144']
 env.user = 'ubuntu'
 env.key_filename = 'my_ssh_private_key'
 
+# Flag to track if do_pack has been executed
+do_pack_executed = False
+
 
 def do_pack():
     """
     generates a.tgz archive from the contents of the web_static folder
     """
+    global do_pack_executed  # Use the global flag
+
+    # Check if do_pack has already been executed
+    if do_pack_executed:
+        print("New version already deployed.")
+        return None
+
+    # Set the flag to indicate that do_pack is being executed
+    do_pack_executed = True
 
     try:
         local('mkdir -p versions')
@@ -75,7 +87,13 @@ def deploy():
     archive_path = do_pack()
     if archive_path is None:
         return False
-    return do_deploy(archive_path)
+
+    # Call do_deploy with the new archive path on both servers
+    for host in env.hosts:
+        env.host_string = host
+        if not do_deploy(archive_path):
+            return False
+    return True
 
 
 def do_clean(number=0):
@@ -90,12 +108,14 @@ def do_clean(number=0):
         number += 1
 
     # delete in local machine
-    # os.chdir('./versions')
-    with lcd('./versions/'):
-        local("ls -t | tail -n +{} | xargs rm -rf".format(number))
+    # with lcd('./versions/'):
+    #     local("ls -t | tail -n +{} | xargs rm -rf".format(number))
+    local("cd versions && ls -t | tail -n +{} | xargs rm -rf".format(number))
 
     # delete in remote server
-    with cd('/data/web_static/releases/'):
-        output = run("ls -t | tail -n +{} | xargs rm -rf".format(number))
-        if output.failed:
-            print("Command failed with error:", output)
+    # with cd('/data/web_static/releases/'):
+    #     output = run("ls -t | tail -n +{} | xargs rm -rf".format(number))
+    #     if output.failed:
+    #         print("Command failed with error:", output)
+    path = "/data/web_static/releases"
+    run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))

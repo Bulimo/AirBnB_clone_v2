@@ -9,11 +9,23 @@ env.hosts = ['18.204.6.232', '3.86.13.144']
 env.user = 'ubuntu'
 env.key_filename = 'my_ssh_private_key'
 
+# Flag to track if do_pack has been executed
+do_pack_executed = False
+
 
 def do_pack():
     """
     generates a.tgz archive from the contents of the web_static folder
     """
+    global do_pack_executed  # Use the global flag
+
+    # Check if do_pack has already been executed
+    if do_pack_executed:
+        print("New version already deployed.")
+        return None
+
+    # Set the flag to indicate that do_pack is being executed
+    do_pack_executed = True
 
     try:
         local('mkdir -p versions')
@@ -75,4 +87,10 @@ def deploy():
     archive_path = do_pack()
     if archive_path is None:
         return False
-    return do_deploy(archive_path)
+
+    # Call do_deploy with the new archive path on both servers
+    for host in env.hosts:
+        env.host_string = host
+        if not do_deploy(archive_path):
+            return False
+    return True
