@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bash script that sets up your web servers for the deployment of web_static
 
-WEB_STATIC="location /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}"
+WEB_STATIC="location /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n"
 
 #install nginx if not yet installed
 sudo apt-get update > /dev/null 2>&1
