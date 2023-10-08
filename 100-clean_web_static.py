@@ -114,6 +114,6 @@ def do_clean(number=0):
 
     # delete in remote server
     with cd('/data/web_static/releases/'):
-        sudo("ls -t | tail -n +{} | xargs rm -rf".format(num))
+        run("ls -t | tail -n +{} | xargs rm -rf".format(num))
     # path = "/data/web_static/releases"
     # run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
