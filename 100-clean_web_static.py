@@ -112,14 +112,7 @@ def do_clean(number=0):
     # local("cd versions && ls -t | tail -n +{} | xargs rm -rf".format(number))
 
     # delete in remote server
-    # with cd('/data/web_static/releases/'):
-    #     run("ls -t | tail -n +{} | xargs rm -rf".format(num))
-    # # path = "/data/web_static/releases"
-    # # run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
-    cmd_parts = [
-        "rm -rf $(",
-        "find /data/web_static/releases/ -maxdepth 1 -type d -iregex",
-        " '/data/web_static/releases/web_static_.*'",
-        " | sort -r | tr '\\n' ' ' | cut -d ' ' -f{}-)".format(num)
-    ]
-    run(''.join(cmd_parts))
+    with cd('/data/web_static/releases/'):
+        run("ls -t | tail -n +{} | xargs rm -rf".format(num))
+    # path = "/data/web_static/releases"
+    # run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
