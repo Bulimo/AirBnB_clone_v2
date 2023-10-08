@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Module 3-deploy_web_static"""
-from fabric.api import env, local, put, run, cd, lcd
+from fabric.api import env, local, put, run, cd, lcd, sudo
 from datetime import datetime
 import os
 
@@ -100,37 +100,20 @@ def do_clean(number=0):
     """
     Deletes out-of-date archives and unnecessary folders
     """
-    # num = int(number)
+    num = int(number)
 
-    # if num == 0:
-    #     num = 1
-    # num += 1
+    if num == 0:
+        num = 1
+    num += 1
 
-    # # delete in local machine
-    # with lcd('./versions/'):
-    #     local("ls -t | tail -n +{} | xargs rm -rf".format(num))
-    # # local("cd versions && ls -t | tail -n +{} | xargs rm -rf".
+    # delete in local machine
+    with lcd('./versions/'):
+        local("ls -t | tail -n +{} | xargs rm -rf".format(num))
+    # local("cd versions && ls -t | tail -n +{} | xargs rm -rf".
     # format(number))
 
-    # # delete in remote server
-    # with cd('/data/web_static/releases/'):
-    #     run("ls -t | tail -n +{} | xargs rm -rf".format(num))
-    # # path = "/data/web_static/releases"
-    # # run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
-    archives = os.listdir('versions/')
-    archives.sort(reverse=True)
-    start = int(number)
-    if not start:
-        start += 1
-    del_archives = []
-    if start < len(archives):
-        del_archives = archives[start:]
-    for archive in del_archives:
-        os.unlink('versions/{}'.format(archive))
-    cmd_parts = [
-        "rm -rf $(",
-        "find /data/web_static/releases/ -maxdepth 1 -type d -iregex",
-        " '/data/web_static/releases/web_static_.*'",
-        " | sort -r | tr '\\n' ' ' | cut -d ' ' -f{}-)".format(start + 1)
-    ]
-    run(''.join(cmd_parts))
+    # delete in remote server
+    with cd('/data/web_static/releases/'):
+        sudo("ls -t | tail -n +{} | xargs rm -rf".format(num))
+    # path = "/data/web_static/releases"
+    # run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
