@@ -100,21 +100,19 @@ def do_clean(number=0):
     """
     Deletes out-of-date archives and unnecessary folders
     """
-    number = int(number)
+    num = int(number)
 
-    if number == 0:
-        number = 1
-    number += 1
+    if num == 0:
+        num = 1
+    num += 1
 
     # delete in local machine
     with lcd('./versions/'):
-        local("ls -t | tail -n +{} | xargs rm -rf".format(number))
+        local("ls -t | tail -n +{} | xargs rm -rf".format(num))
     # local("cd versions && ls -t | tail -n +{} | xargs rm -rf".format(number))
 
     # delete in remote server
     with cd('/data/web_static/releases/'):
-        output = run("ls -t | tail -n +{} | xargs rm -rf".format(number))
-        # if output.failed:
-        #     print("Command failed with error:", output)
+        run("ls -t | tail -n +{} | xargs rm -rf".format(num))
     # path = "/data/web_static/releases"
     # run("cd {} ; ls -t | tail -n +{} | xargs rm -fr".format(path, number))
