@@ -13,3 +13,5 @@ web_02
 *.log
 *.tgz
 my_ssh_private_key
+hbnb/*
+web_flask/__pycache__/*
