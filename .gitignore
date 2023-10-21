@@ -15,3 +15,4 @@ web_02
 my_ssh_private_key
 hbnb/*
 web_flask/__pycache__/*
+main.py
