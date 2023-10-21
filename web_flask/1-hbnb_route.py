@@ -19,7 +19,7 @@ def hello():
 @app.route("/hbnb")
 def hbnb():
     """ Initialize content in the hbnb page """
-    return "HBNB!"
+    return "HBNB"
 
 
 if __name__ == '__main__':
