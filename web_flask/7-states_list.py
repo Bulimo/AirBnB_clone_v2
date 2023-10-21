@@ -16,7 +16,7 @@ def states_list():
     """
     Display a html page of all States in DB ordered by Name
     """
-    state_objs = [s for s in storage.all(State).values()]
+    state_objs = [state for state in storage.all("State").values()]
     return render_template('7-states_list.html', state_objs=state_objs)
 
 
