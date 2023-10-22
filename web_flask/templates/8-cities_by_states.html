@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBNB</title>
+</head>
+<body>
+    <h1>States</h1>
+    <ul>
+        {% for state in state_objs | sort(attribute='name') %}
+        <LI>{{ state.id }}: <B>{{ state.name }}</B>
+            <UL>
+                {% for city in state.cities | sort(attribute='name') %}
+                <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+                {% endfor %}
+            </UL>
+        </LI>
+        {% endfor %}
+    </ul>
+</body>
+</html>
