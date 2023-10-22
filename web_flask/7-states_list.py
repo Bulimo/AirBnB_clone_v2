@@ -5,7 +5,10 @@ listen on 0.0.0.0, port 5000
 routes: /states_list:         display HTML and state info from storage
 """
 from flask import Flask, render_template
-from models import storage, State
+from models import storage
+from models.place import Place
+from models.state import State
+from models.city import City
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
