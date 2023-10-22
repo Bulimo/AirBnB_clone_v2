@@ -5,6 +5,7 @@ listen on 0.0.0.0, port 5000
 routes: /states_list:         display HTML and state info from storage
         /cities_by_states     display HTML with cities in state info
         /states/<id>:         display a HTML with state, cities given id
+        /hbnb_filters:        display hbnb HTML page 10-hbnb_filters.html
 """
 from flask import Flask, render_template
 from models import storage
@@ -55,6 +56,18 @@ def states_id(id):
         if state.id == id:
             state_obj = state
     return render_template('9-states.html', state_obj=state_obj)
+
+
+@app.route('/hbnb_filters')
+def hbnb_index_html():
+    """
+     Display a html page of all cities by States in DB ordered by Name
+    in the hbnb project
+    """
+    state_objs = list(storage.all("State").values())
+    amenity_objs = list(storage.all("Amenity").values())
+    return render_template('10-hbnb_filters.html',
+                           state_objs=state_objs, amenity_objs=amenity_objs)
 
 
 if __name__ == '__main__':

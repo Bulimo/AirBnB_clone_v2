@@ -16,7 +16,7 @@ app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
-def teardown_session():
+def teardown_session(self):
     """
     terminate an SQLAlchemy session
     """
